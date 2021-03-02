@@ -1,0 +1,1 @@
+from sber_backend.db_interface import exercise
