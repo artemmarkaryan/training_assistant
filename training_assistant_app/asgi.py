@@ -7,13 +7,23 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 """
 import os
-
-from channels.routing import ProtocolTypeRouter
+from .wsgi import *
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.routing import get_default_application
 from django.core.asgi import get_asgi_application
+from sber_backend import router
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'training_assistant_app.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+
+# from configurations import importer
+# importer.install()
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    # Just HTTP for now. (We can add other protocols later.)
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            router.websocket_urlpatterns
+        )
+    ),
 })
