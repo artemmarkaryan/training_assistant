@@ -1,1 +1,1 @@
-web: python3 manage.py runserver 0.0.0.0
+web: gunicorn training_assistant_app.wsgi
