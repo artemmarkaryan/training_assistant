@@ -1,1 +1,1 @@
-web: gunicorn training_assistant_app.wsgi
+web: daphne training_assistant_app.asgi:application
