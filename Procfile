@@ -1,1 +1,1 @@
-web: daphne training_assistant_app.asgi:application -p $PORT
+web: daphne training_assistant_app.asgi:application -p $PORT -b 0.0.0.0
