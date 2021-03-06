@@ -9,6 +9,17 @@
 <h2>Вот такой я еблан</h2>
 </body>
 <script>
-    webSocket = new WebSocket("ws://0.0.0.0:8000/ws/session/establish/");
+    webSocket = new WebSocket(
+        "ws://127.0.0.1:8000/ws/session/establish/",
+        "default"
+    );
+    webSocket.onopen = (event) => {
+        console.log(event)
+    };
+    webSocket.onmessage = (event) => {
+        let msg = JSON.parse(event.data);
+        console.log(msg.type)
+        console.log(event.data)
+    };
 </script>
 </html>

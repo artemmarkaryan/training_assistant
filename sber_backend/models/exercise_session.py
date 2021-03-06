@@ -1,10 +1,10 @@
 from django.db.models import *
 
 
-class TrainingSession(Model):
+class ExerciseSession(Model):
     def __str__(self):
-        return self.exercise.name
+        return f'{self.exercise.name} {self.start.strftime("%H:%M")}'
 
     exercise = ForeignKey('Exercise', on_delete=RESTRICT)
     start = DateTimeField()
-    end = DateTimeField()
+
