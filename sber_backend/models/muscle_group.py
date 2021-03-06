@@ -7,6 +7,7 @@ class MuscleGroup(Model):
         return self.name
 
     name = CharField(max_length=128)
+    verbose_name = CharField(max_length=128, default=name)
     description = TextField()
 
 
