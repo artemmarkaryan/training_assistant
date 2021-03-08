@@ -1,5 +1,5 @@
 from channels.db import database_sync_to_async
-from typing import List, Dict
+from typing import List, Dict, Coroutine
 from datetime import datetime, timedelta
 from django.db.models import Sum, QuerySet, F
 
@@ -11,22 +11,23 @@ from ..models.exercise_session import ExerciseSession
 
 
 @database_sync_to_async
-def get_statistics() -> List[Dict]:
-    today_exercises: QuerySet = ExerciseSession.objects.filter(
+def get_daily_statistics():
+    today_exercise_sessions: QuerySet = ExerciseSession.objects.filter(
         start__gt=datetime.now() - timedelta(days=1)
-    ).select_related(
-        'exercise'
-    ).select_related(
-        'muscle_group'
-    ).values(
-        'exercise__muscle_group__name'
-    ).annotate(
-        muscleGroupName=F('exercise__muscle_group__name'),
-        experience=Sum('exercise__experience')
-    )
+    ).select_related('exercise')
 
-    d: dict
-    for d in today_exercises:
-        del d['exercise__muscle_group__name']
+    per_muscle_group = {}
+    exercise_session_count = len(today_exercise_sessions)
+    for muscle_group in MuscleGroup.objects.all():
 
-    return list(today_exercises)
+        per_muscle_group[muscle_group.name] = sum(
+            [
+                ex_sess.exercise.experience for ex_sess in today_exercise_sessions
+                if muscle_group in ex_sess.exercise.muscle_group.all()
+            ]
+        )
+
+    return {
+        'PerMuscleGroup': per_muscle_group,
+        'ExerciseSessions': exercise_session_count
+    }

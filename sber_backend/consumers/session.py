@@ -20,18 +20,18 @@ class SessionConsumer(AsyncConsumer):
         await self.send(response_wrapper.wrap_ws_message("pong"))
 
     async def send(self, message):
-        print('sending', message)
         await super().send(message)
 
     async def dispatch_status(self):
         while True:
             connection: SessionConsumer
-            statistics = await db_interface.statistics.get_statistics()
+            statistics = await db_interface.statistics.get_daily_statistics()
+
             for connection in pool:
                 await connection.send(
                     response_wrapper.wrap_ws_data(
-                        data={'globalDailyStats': statistics},
-                        payload_type="UPDATE_GLOBAL_STATS",
+                        data=statistics,
+                        payload_type="UPDATE_DAILY_GLOBAL_STATS",
                     )
                 )
-                await asyncio.sleep(self.GLOBAL_STATS_UPDATE_PERIOD)
+            await asyncio.sleep(self.GLOBAL_STATS_UPDATE_PERIOD)
