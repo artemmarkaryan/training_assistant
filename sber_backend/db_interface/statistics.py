@@ -28,6 +28,6 @@ def get_daily_statistics():
         )
 
     return {
-        'PerMuscleGroup': per_muscle_group,
-        'ExerciseSessions': exercise_session_count
+        'perMuscleGroup': per_muscle_group,
+        'exerciseSessions': exercise_session_count
     }
