@@ -1,11 +1,15 @@
+from django.http import HttpRequest
 from .. import db_interface
 from ..models import Exercise
 from training_assistant_app.helpers import response_wrapper
 
 
-def start(exercise_id: int):
+def new(request: HttpRequest):
     try:
-        new_exercise_session_id = db_interface.exercise_session.new(exercise_id)
+        exercise_id = request.GET.get(key="exerciseId")
+        new_exercise_session_id = db_interface.exercise_session.new(
+            exercise_id
+        )
         return response_wrapper.wrap_http_data(
             {"newExerciseId": new_exercise_session_id}
         )
