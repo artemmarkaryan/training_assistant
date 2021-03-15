@@ -1,3 +1,4 @@
 from sber_backend.db_interface import exercise
+from sber_backend.db_interface import exercise_session
 from sber_backend.db_interface import muscle_group
 from sber_backend.db_interface import statistics

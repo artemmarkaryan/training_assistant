@@ -4,6 +4,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('exercise/all', views.exercise.get_all),
+    path('exercise/random', views.exercise.random),
 ] + staticfiles_urlpatterns()
 
 

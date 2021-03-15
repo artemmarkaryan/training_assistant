@@ -6,5 +6,5 @@ class ExerciseSession(Model):
         return f'{self.exercise.name} {self.start.strftime("%H:%M")}'
 
     exercise = ForeignKey('Exercise', on_delete=RESTRICT)
-    start = DateTimeField()
+    start = DateTimeField(auto_now_add=True)
 
